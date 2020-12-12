@@ -1,0 +1,4 @@
+D:\ComputerGraphics\Debug\ComputerGraphics.exe
+D:\ComputerGraphics\Debug\ComputerGraphics.pdb
+D:\ComputerGraphics1\Debug\ComputerGraphics.exe
+D:\ComputerGraphics1\Debug\ComputerGraphics.pdb
