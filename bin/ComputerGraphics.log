@@ -1,0 +1,12 @@
+﻿  Main.cpp
+D:\ComputerGraphics1\Main.cpp(122,30): warning C4305: инициализация: усечение из "double" в "float"
+D:\ComputerGraphics1\Main.cpp(292,25): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(293,26): warning C4244: инициализация: преобразование "int" в "float", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(476,17): warning C4244: =: преобразование "int" в "GLfloat", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(477,17): warning C4244: =: преобразование "int" в "GLfloat", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(482,13): warning C4244: =: преобразование "int" в "GLfloat", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(483,13): warning C4244: =: преобразование "int" в "GLfloat", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(499,44): warning C4244: =: преобразование "int" в "GLfloat", возможна потеря данных
+D:\ComputerGraphics1\Main.cpp(500,45): warning C4244: =: преобразование "int" в "GLfloat", возможна потеря данных
+  ComputerGraphics.vcxproj -> D:\ComputerGraphics1\Debug\ComputerGraphics.exe
+  Скопировано файлов:         1.
