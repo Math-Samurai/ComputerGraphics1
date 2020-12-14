@@ -15,68 +15,64 @@ uniform int id;
 vec3 lightPos = {0.0f, 0.0f, -11.0f};
 vec3 lightColor = {1.0f, 1.0f, 1.0f};
 
-vec3 ambient()
+vec3 ambient(void)
 {
-    const float ambientStrength = 0.6;
-    return ambientStrength * lightColor;
+    return 0.6f * lightColor;
 }
 
 vec3 specular(vec3 Normal)
 {
-    vec3 lightDir   = normalize(lightPos - Position);
-    vec3 viewDir    = normalize(cameraPos - Position);
-    vec3 halfwayDir = normalize(lightDir + viewDir);
-    float spec = pow(max(dot(Normal, halfwayDir), 0.0), 1000.0f);
-    return lightColor * spec;
+    Normal = normalize(Normal);
+    vec3 viewVec = normalize(cameraPos - Position);  
+    vec3 lightVec = normalize(lightPos - Position);  
+    vec3 medianVec = normalize(viewVec + lightVec);
+    float res = pow(max(dot(Normal, medianVec), 0.0), 1000.0f);
+    return lightColor * res;
 }
 
 vec3 diffuse(vec3 Normal)
 {
-    vec3 norm = normalize(Normal);
-    vec3 lightDir = normalize(lightPos - Position);
-    float diff = max(dot(norm, lightDir), 0.0);
-    return diff * lightColor;
+    Normal = normalize(Normal);
+    vec3 lightVec = normalize(lightPos - Position);
+    float res = max(dot(Normal, lightVec), 0.0);
+    return lightColor * res;
 }
 
 vec2 ParallaxMapping(vec2 texCoords, vec3 viewDir)
 { 
-    const int numLayers = 100;
-    float layerDepth = 1.0f / numLayers;
-    float currentLayerDepth = 0.0;
-    vec2 P = viewDir.xy * 0.05f; 
-    vec2 deltaTexCoords = P / numLayers;
-
-    vec2  currentTexCoords = texCoords;
-    float currentDepthMapValue = texture(depthTex, currentTexCoords).r;
-  
-    while(currentLayerDepth < currentDepthMapValue)
+    const int layersCount = 100;
+    float depthOfLayer = 1.0f / layersCount;
+    float currentDepth = 0.0;
+    vec2 res = viewDir.xy * 0.05f; 
+    vec2 deltaTexCoords = res / layersCount;
+    vec2  currentCoords = texCoords;
+    float currentDepthMap = texture(depthTex, currentCoords).r;
+    while(currentDepthMap > currentDepth)
     {
-        currentTexCoords -= deltaTexCoords;
-        currentDepthMapValue = texture(depthTex, currentTexCoords).r;  
-        currentLayerDepth += layerDepth;  
+        currentCoords -= deltaTexCoords;
+        currentDepthMap = texture(depthTex, currentCoords).r;  
+        currentDepth += depthOfLayer;  
     }
-
     deltaTexCoords /= 2;
-    layerDepth /= 2;
-    currentTexCoords += deltaTexCoords;
-    currentLayerDepth -= layerDepth;
-    for (int i = 0; i < 5; ++i)
+    depthOfLayer /= 2;
+    currentDepth -= depthOfLayer;
+    currentCoords += deltaTexCoords;
+    for (int i = 0; i < 10; ++i)
     {
-        currentDepthMapValue = texture(depthTex, currentTexCoords).r;
+        currentDepthMap = texture(depthTex, currentCoords).r;
         deltaTexCoords /= 2;
-        layerDepth /= 2;
-        if (currentDepthMapValue > currentLayerDepth)
+        depthOfLayer /= 2;
+        if (currentDepth < currentDepthMap)
         {
-            currentTexCoords -= deltaTexCoords;
-            currentLayerDepth += layerDepth;
+            currentCoords -= deltaTexCoords;
+            currentDepth += depthOfLayer;
         } else
         {
-            currentTexCoords += deltaTexCoords;
-            currentLayerDepth -= layerDepth;
+            currentCoords += deltaTexCoords;
+            currentDepth -= depthOfLayer;
         }
     }
-
-    return currentTexCoords; 
+    return currentCoords; 
 }
 
 void main()
